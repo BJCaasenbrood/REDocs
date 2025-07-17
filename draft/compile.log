@@ -167,75 +167,18 @@ Overfull \hbox (13.61926pt too wide) in paragraph at lines 21--64
 \TU/LinLibertine(0)/m/n/8 ficiently captures material distribution, actuator pl
 acement, and time-dependent
 (./1_introduction/1_introduction.tex [1.1]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.78 as: {[} M\ddot
-                   {x}(t) + C\dot{x}(t) + Kx(t) = F\_\{\text{act}\}(t) +
+Overfull \hbox (1.4523pt too wide) in paragraph at lines 69--75
+\TU/LinLibertine(0)/m/n/9 tured subject to external vibrations, such as those i
+nduced by nearby
 
-! LaTeX Error: Bad math environment delimiter.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.79 F\_\{\text{dist}\}(t) {]} where \(
-                                       M\), \(C\), and \(K\) represent the
-! Missing $ inserted.
-<inserted text> 
-                $
-l.89 \min
-         \_\{\text{morphology},, \text{control}\} \int\_0\^{}T
-
-LaTeX Warning: Command \^ invalid in math mode on input line 89.
-
-! Missing delimiter (. inserted).
-<to be read again> 
-                   \begingroup 
-l.90 \left\textbar
-                  {} x(t) \right\textbar\^{}2 dt {]} subject to physical
-
-LaTeX Warning: Command \textbar invalid in math mode on input line 90.
-
-! Missing delimiter (. inserted).
-<to be read again> 
-                   \begingroup 
-l.90 \left\textbar{} x(t) \right\textbar
-                                        \^{}2 dt {]} subject to physical
-
-LaTeX Warning: Command \textbar invalid in math mode on input line 90.
-
-
-LaTeX Warning: Command \^ invalid in math mode on input line 90.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.95 
-     
-
-Overfull \hbox (4.30153pt too wide) in paragraph at lines 85--95
-[]\TU/LinLibertine(1)/m/n/9 The co-design problem seeks to simultaneously optim
-ize the place-
-
-Overfull \hbox (867.72424pt too wide) in paragraph at lines 85--95
-\TU/LinLibertine(1)/m/n/9 This can be formalized as: [ $[] [][][][] [] [][] [] 
-[][][][] [] [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][] [][][][][][][][][][][][][][][] [][][][][][][][][][][][][][][][]
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][] [][][][][][][][][][][][][][][][][][][][][][][][][][][][][] []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active
-
-Class acmart Warning: A possible image without description on input line 114.
+Class acmart Warning: A possible image without description on input line 94.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) (/usr/share/texlive/texmf-dist/tex/generic/stringenc/se-pdfdoc.def)
+)
+Underfull \vbox (badness 10000) has occurred while \output is active
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/se-pdfdoc.def)
 (/usr/share/texlive/texmf-dist/tex/generic/stringenc/se-utf32be.def)
 
 Class acmart Warning: Some images may lack descriptions.

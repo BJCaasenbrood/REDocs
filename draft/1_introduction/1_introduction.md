@@ -16,19 +16,7 @@ An excellent example of applied morphology in engineering is found in soft robot
 ## Problem statement
 To highlight the importance of co-design as a framework, let us consider a few illustrative design problems. 
 
-*Example 1 -- Disturbance-rejection*: Consider a mechanical structure mounted on a base subject to external vibrations, such as those induced by nearby machinery or environmental disturbances. The design objective is to develop an active structure whose morphology and control strategy are co-optimized to suppress the transmission of floor vibrations to the payload. 
-
-Let $x(t)$ denote the displacement of the payload, and $y(t)$ the displacement of the vibrating floor. The system dynamics can be modeled as:
-\[
-M\ddot{x}(t) + C\dot{x}(t) + Kx(t) = F_{\text{act}}(t) + F_{\text{dist}}(t)
-\]
-where $M$, $C$, and $K$ represent the mass, damping, and stiffness matrices determined by the system's morphology, $F_{\text{act}}(t)$ is the actuator force, and $F_{\text{dist}}(t)$ is the disturbance force transmitted from the floor.
-
-The co-design problem seeks to simultaneously optimize the placement and properties of sensors and actuators (morphology), as well as the control law $F_{\text{act}}(t)$, to minimize the effect of $F_{\text{dist}}(t)$ on $x(t)$. This can be formalized as:
-\[
-\min_{\text{morphology},\, \text{control}} \int_0^T \left| x(t) \right|^2 dt
-\]
-subject to physical constraints on mass, actuator limits, and sensor noise. The solution involves iterative refinement of both the mechanical configuration and the control algorithm to achieve robust disturbance rejection, demonstrating the necessity of co-design in high-precision environments.
+*Example 1 -- Disturbance-rejection*: Consider a mechanical structured subject to external vibrations, such as those induced by nearby machinery or environmental disturbances. The design objective is to develop an active structure whose morphology and control strategy are co-optimized to suppress the transmission of floor vibrations to the payload. 
 
 
 
