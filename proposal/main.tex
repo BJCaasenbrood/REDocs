@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+
+\title{Proposal: On Research and Teaching \\ within Computational Dynamics (TU/e)}
+
+\author{
+dr.ir. Brandon Caasenbrood\\
+  Department of Mechanical Engineering\\
+  Dynamics and Control -- Computational Dynamics \\[0.5em]
+  Eindhoven University of Technology (TU/e)\\
+  Het Eeuwsel 6, 5612 AS Eindhoven, the Netherlands\\
+  \url{b.j.caasenbrood@gmail.com}
+  \vspace{-8mm}
+}
+
+\begin{document}
+\maketitle
+% \begin{abstract}
+
+% \end{abstract}
+\vspace{-10mm}
+\input{research/1_research.tex}
+
+% \hspace{5mm} \textbf{(Non-Smooth) Dynamics for Precision Systems:} Address stiffness disparities in high-tech systems (e.g., wafer stages with flexures) by combining your control background with the group’s non-smooth time integration schemes. Focus on mitigating vibrations/chattering induced by intermittent contact.
+
+\hspace{5mm} \textbf{Computational Methods for Dynamic System Design:} 
+Despite over the past three decades of research, despite exponential increases in computational processing power, surprisingly little tangible progress has been achieved beyond the very first co-designed robots (Sims, 1994). This stagnation is due in part to the nested complexity of evolving a systems’s morphology and learning a bespoke controller for every morphological variant.
+
+The design of mechanical systems is inherently a dynamic process, involving the interplay of various physical phenomena such as forces, torques, and energy transfer. The complexity of these interactions necessitates the development of sophisticated computational methods to accurately model and simulate dynamic behavior. This is particularly crucial in high-precision applications, where even minor deviations can lead to significant performance degradation.
+With the increasing complexity of mechanical systems, there is an increasing demand for the development of efficient computational methods for simulating dynamics. An example is the field of (humanoid) robotics, where extensive research and development are spent on simulation engines. Some prominent examples are Nvidia Isaac Sim, enabling researchers to simulate and test (AI-driven) robotics solutions in physics-based virtual environments. MuJoCo, a physics engine for robotics and biomechanics, which is widely used in reinforcement learning research -- which has been extended to Nvidia Wrap as to allow GPU acceleration. 
+
+The fruits of these tools have been a 
+
+This includes extending the group’s existing tools to handle large deformations and contact in soft robots, as well as integrating machine learning techniques to enhance simulation speed and accuracy.
+
+Collaborate on real-time simulation of soft robots undergoing contact (e.g., elephant trunk wrapping around objects). Propose structure-preserving integration schemes (your PhD strength) for their nonlinear rod FEM, ensuring energy/momentum consistency during impact.
+
+\section*{Education Plan}
+
+\hspace{5mm} \textbf{Teaching philosophy:} Foster systems thinking by integrating design, modeling, and control in curricula. Highlight interdisciplinary connections (e.g., mechanics  control theory ↔ AI) through hands-on projects (e.g., designing a robot arm with co-optimized mechanics/control).
+
+\textbf{Support curricula:} There are several courses that I have supported: Dynamics, Nonlinear Dynamics, Introduction to Robotics, Dynamics and Control of Mechanical Systems, and 
+
+
+Courses/Labs to Develop:
+
+    Co-Design of Mechanical Systems: Graduate course covering topology optimization, reduced-order modeling, and control co-design.
+
+    Precision Mechatronics: Lab-based class on mitigating mechanical vibrations via control-aware design (e.g., flexure mechanisms with embedded actuators).
+
+Outreach:
+    Mentor students in cross-domain projects (e.g., soft robotics for medical applications) and collaborate with industry to address real-world co-design challenges (e.g., ASML, Siemens).
+
+\bibliographystyle{unsrt}  
+%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+%%% and comment out the ``thebibliography'' section.
+
+
+%%% Comment out this section when you \bibliography{references} is enabled.
+\begin{thebibliography}{1}
+
+\bibitem{Sims1994Jan} 
+Karl Sims
+\newblock Evolving 3D morphology and behavior by competition.
+\newblock In {\em Artificial Life}, volume~1, number~4, pages 353--372. 
+MIT Press, 1994.
+
+
+\end{thebibliography}
+
+
+\end{document}
