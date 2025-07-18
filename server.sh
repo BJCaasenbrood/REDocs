@@ -10,4 +10,4 @@ echo "Press Ctrl+C to stop the server"
 echo ""
 
 # Start the Python watchdog compiler
-python watchdog_compiler.py
+python3 ./scripts/watchdog_compiler.py

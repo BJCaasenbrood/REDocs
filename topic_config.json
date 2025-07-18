@@ -1,0 +1,51 @@
+{
+  "topics": {
+    "Co-design": [     
+      "topology optimization",
+      "structural optimization",
+      "design optimization"
+    ],
+    "Topology Optimization": [
+      "topology",
+      "optimization",
+      "topological",
+      "structural optimization",
+      "design optimization"
+    ],
+    "Soft Robotics": [
+      "soft",
+      "robot",
+      "robotics",
+      "locomotion",
+      "locomoting",
+      "soft body",
+      "deformable"
+    ],
+    "Artificial Life": [
+      "virtual",
+      "creature",
+      "creatures",
+      "evolving",
+      "evolution",
+      "evolutionary",
+      "artificial life",
+      "organism",
+      "organisms",
+      "evolutionary robotics"
+    ],
+    "Machine Learning": [
+      "neural",
+      "learning",
+      "ai",
+      "artificial intelligence",
+      "deep learning",
+      "machine learning",
+      "co-optimization"
+    ]
+  },
+  "settings": {
+    "caseSensitive": false,
+    "exactMatch": false,
+    "minPapersPerTopic": 1
+  }
+}

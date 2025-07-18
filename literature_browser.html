@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature Browser - REDocs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            background: white;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .papers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .paper-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+        }
+
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .paper-year {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .paper-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .paper-venue {
+            color: #888;
+            font-size: 13px;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .paper-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-success {
+            background: #28a745 !important;
+            color: white !important;
+            border: 1px solid #28a745 !important;
+        }
+
+        .btn-success:hover {
+            background: #218838 !important;
+        }
+
+        .label-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .label-btn {
+            background: #6c757d;
+            color: white;
+            border: 1px solid #6c757d;
+            min-width: 90px;
+        }
+
+        .label-btn:hover {
+            background: #5a6268;
+        }
+
+        .color-picker {
+            display: none;
+            position: absolute;
+            background-color: white;
+            padding: 8px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 9999;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            top: 100%;
+            left: 0;
+            width: 200px;
+        }
+
+        .color-picker.show {
+            display: block;
+        }
+
+        .color-strip {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 4px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #ccc transparent;
+        }
+
+        .color-strip::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .color-strip::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 2px;
+        }
+
+        .color-strip::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 2px;
+        }
+
+        .color-strip::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .color-option {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.remove {
+            background: transparent;
+            border: 2px dashed #ccc;
+        }
+
+        .paper-label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .paper-card {
+            position: relative;
+        }
+
+        .label-filters {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .label-filter-btn {
+            width: 32px;
+            height: 32px;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .label-filter-btn:hover, .label-filter-btn.active {
+            border-color: #4facfe;
+            transform: scale(1.1);
+        }
+
+        .label-filter-btn.all-labels {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff, #ff7675, #a29bfe, #fd79a8);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .papers-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Literature Browser</h1>
+            <p>Explore your research paper collection</p>
+            <div id="configStatus" style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;"></div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search papers by title, author, or venue..." id="searchInput">
+            <div class="filters">
+                <button class="filter-btn active" data-topic="all">All Topics</button>
+            </div>
+            <div class="label-filters">
+                <button class="label-filter-btn all-labels active" data-label="all" title="All Labels">
+                </button>
+                <button class="label-filter-btn" data-label="color1" style="background: #ff6b6b;" title="Red"></button>
+                <button class="label-filter-btn" data-label="color2" style="background: #4ecdc4;" title="Teal"></button>
+                <button class="label-filter-btn" data-label="color3" style="background: #45b7d1;" title="Blue"></button>
+                <button class="label-filter-btn" data-label="color4" style="background: #96ceb4;" title="Green"></button>
+                <button class="label-filter-btn" data-label="color5" style="background: #feca57;" title="Yellow"></button>
+                <button class="label-filter-btn" data-label="color6" style="background: #ff9ff3;" title="Pink"></button>
+                <button class="label-filter-btn" data-label="color7" style="background: #54a0ff;" title="Light Blue"></button>
+                <button class="label-filter-btn" data-label="color8" style="background: #ff7675;" title="Coral"></button>
+                <button class="label-filter-btn" data-label="color9" style="background: #a29bfe;" title="Purple"></button>
+                <button class="label-filter-btn" data-label="color10" style="background: #fd79a8;" title="Magenta"></button>
+                <button class="label-filter-btn" data-label="none" style="background: #e9ecef; border: 2px dashed #6c757d;" title="Unlabeled"></button>
+            </div>
+        </div>
+
+        <div class="papers-grid" id="papersGrid">
+            <!-- Papers will be populated by JavaScript -->
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalPapers">6</div>
+                <div class="stat-label">Total Papers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="visiblePapers">6</div>
+                <div class="stat-label">Visible Papers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="yearSpan">31</div>
+                <div class="stat-label">Year Span</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let papers = [];
+        let filteredPapers = [];
+        let topicConfig = null;
+        let paperLabels = {}; // Store paper labels in localStorage
+
+        // Label configuration
+        const labelConfig = {
+            'color1': { color: '#ff6b6b', name: 'Red' },
+            'color2': { color: '#4ecdc4', name: 'Teal' },
+            'color3': { color: '#45b7d1', name: 'Blue' },
+            'color4': { color: '#96ceb4', name: 'Green' },
+            'color5': { color: '#feca57', name: 'Yellow' },
+            'color6': { color: '#ff9ff3', name: 'Pink' },
+            'color7': { color: '#54a0ff', name: 'Light Blue' },
+            'color8': { color: '#ff7675', name: 'Coral' },
+            'color9': { color: '#a29bfe', name: 'Purple' },
+            'color10': { color: '#fd79a8', name: 'Magenta' }
+        };
+
+        // Load paper labels from localStorage
+        function loadLabels() {
+            const stored = localStorage.getItem('paperLabels');
+            paperLabels = stored ? JSON.parse(stored) : {};
+        }
+
+        // Save paper labels to localStorage
+        function saveLabels() {
+            localStorage.setItem('paperLabels', JSON.stringify(paperLabels));
+        }
+
+        // Set label for a paper
+        function setPaperLabel(bibkey, label) {
+            if (label === 'none') {
+                delete paperLabels[bibkey];
+            } else {
+                paperLabels[bibkey] = label;
+            }
+            saveLabels();
+            renderPapers(filteredPapers); // Re-render to show new labels
+        }
+
+        // Get label for a paper
+        function getPaperLabel(bibkey) {
+            return paperLabels[bibkey] || null;
+        }
+
+        // Function to load topic configuration
+        async function loadTopicConfig() {
+            try {
+                console.log('Attempting to load topic_config.json...');
+                const response = await fetch('topic_config.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                topicConfig = await response.json();
+                console.log('Topic configuration loaded successfully:', topicConfig);
+                return true;
+            } catch (error) {
+                console.error('Error loading topic configuration:', error);
+                console.log('Using fallback configuration...');
+                
+                // Fallback to default configuration
+                topicConfig = {
+                    topics: {
+                        'Co-design': ['topology optimization', 'structural optimization', 'design optimization'],
+                        'Topology Optimization': ['topology', 'optimization', 'topological', 'structural optimization', 'design optimization'],
+                        'Soft Robotics': ['soft', 'robot', 'robotics', 'locomotion', 'locomoting', 'soft body', 'deformable'],
+                        'Artificial Life': ['virtual', 'creature', 'creatures', 'evolving', 'evolution', 'evolutionary', 'artificial life'],
+                        'Machine Learning': ['neural', 'learning', 'ai', 'artificial intelligence', 'deep learning', 'machine learning', 'co-optimization']
+                    },
+                    settings: {
+                        caseSensitive: false,
+                        exactMatch: false,
+                        minPapersPerTopic: 1
+                    }
+                };
+                return false;
+            }
+        }
+
+        // Function to parse BibTeX content (simplified version)
+        function parseBibTeX(bibContent) {
+            const entries = [];
+            
+            // Remove comments and intermediate output lines from pdf2bib
+            const cleanContent = bibContent
+                .replace(/^\s*%.*$/gm, '')
+                .replace(/^\s*\(All intermediate output will be suppressed.*$/gm, '');
+            
+            // More robust regex to match BibTeX entries
+            const entryMatches = cleanContent.match(/@\w+\s*\{[^@]*?\n\s*\}/gs);
+            
+            console.log('Found', entryMatches ? entryMatches.length : 0, 'BibTeX entries');
+            
+            if (!entryMatches) return entries;
+
+            entryMatches.forEach(entry => {
+                const entryObj = {};
+                
+                // Extract citation key
+                const keyMatch = entry.match(/@\w+\s*\{\s*([^,\s]+)/);
+                if (keyMatch) {
+                    entryObj.bibkey = keyMatch[1];
+                }
+                
+                // Extract fields
+                const fieldMatches = entry.match(/(\w+)\s*=\s*\{([^}]*)\}/g);
+                if (fieldMatches) {
+                    fieldMatches.forEach(field => {
+                        const fieldMatch = field.match(/(\w+)\s*=\s*\{([^}]*)\}/);
+                        if (fieldMatch) {
+                            entryObj[fieldMatch[1]] = fieldMatch[2];
+                        }
+                    });
+                }
+                
+                // Add entry if it has basic required fields
+                if (entryObj.title && entryObj.year) {
+                    entries.push(entryObj);
+                    console.log('Added BibTeX entry:', entryObj.title, '(', entryObj.year, ')');
+                }
+            });
+            
+            console.log('Total BibTeX entries parsed:', entries.length);
+            return entries;
+        }        // Global variable to store available PDF files
+        let availablePDFs = [];
+
+        // Function to load available PDF files from bib directory
+        async function loadAvailablePDFs() {
+            try {
+                // Try to get directory listing from server
+                const response = await fetch('bib/');
+                const html = await response.text();
+                
+                // Parse HTML directory listing to extract PDF filenames
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const links = doc.querySelectorAll('a[href$=".pdf"]');
+                
+                availablePDFs = Array.from(links).map(link => 
+                    decodeURIComponent(link.getAttribute('href'))
+                );
+                
+                console.log('Found PDF files:', availablePDFs);
+                return availablePDFs;
+            } catch (error) {
+                console.warn('Could not load PDF directory listing, using fallback method');
+                // Fallback: Use known PDF files (this should be updated when new PDFs are added)
+                availablePDFs = [
+                    "1994 - Proceedings of the 21st annual conference on Computer graphics and interactive techniques - SIGGRAPH 94 - Sims - Evolving virtual creatures.pdf",
+                    "2006 - Smart Mater. Struct. - Wang, Tai, Quek - Topology optimization of piezoelectric sensorsactuators for torsional vibration control of composite plates.pdf",
+                    "2017 - Struct. Multidiscip. Optim. - Han, In Kim, Kim - Topology optimization of planar linkage mechanisms for path generation without prescribed timing.pdf",
+                    "2020 - arXiv - Li, Kovachki, Azizzadenesheli et al. - Fourier Neural Operator for Parametric Partial Differential Equations.pdf",
+                    "2023 - Comput. Methods Appl. Mech. Eng. - Yuhn, Sato, Kobayashi et al. - 4D topology optimization Integrated optimization of the structure and self-actuation of soft bodies for dynamic motions.pdf",
+                    "2023 - Struct. Multidiscip. Optim. - Sato, Kobayashi, Yuhn et al. - Topology optimization of locomoting soft bodies using material point method.pdf",
+                    "2023 - arXiv - Lippe, Veeling, Perdikaris et al. - PDE-Refiner Achieving Accurate Long Rollouts with Neural PDE Solvers.pdf",
+                    "2024 - arXiv - Sato, Yuhn, Kobayashi et al. - Computational co-design of structure and feedback controller for locomoting soft robots.pdf",
+                    "2025 - arXiv - Liu, Zhang, Chen et al. - Neural Co-Optimization of Structural Topology, Manufacturable Layers, and Path Orientations for Fiber-Reinforced Composites.pdf"
+                ];
+                return availablePDFs;
+            }
+        }
+
+        // Function to find matching PDF file
+        function findMatchingPDF(year, title, author) {
+            // Try to match by year and author name
+            const authorLastName = author ? author.split(',')[0].split(' ').pop().toLowerCase() : '';
+            
+            for (const filename of availablePDFs) {
+                const fileYear = filename.substring(0, 4);
+                const fileLower = filename.toLowerCase();
+                
+                // Match by year first
+                if (fileYear === year.toString()) {
+                    // Then try to match by author last name
+                    if (authorLastName && fileLower.includes(authorLastName)) {
+                        return filename;
+                    }
+                    // Or match by title keywords
+                    const titleWords = title.toLowerCase().split(' ').slice(0, 3);
+                    if (titleWords.some(word => word.length > 3 && fileLower.includes(word))) {
+                        return filename;
+                    }
+                }
+            }
+            
+            // Fallback: try to find any file with matching year
+            for (const filename of availablePDFs) {
+                if (filename.startsWith(year.toString())) {
+                    return filename;
+                }
+            }
+            
+            return null;
+        }
+
+        // Function to create papers from PDF files and match to BibTeX entries
+        async function createPapersFromPDFs() {
+            const papers = [];
+            const bibEntries = await loadBibTexEntries();
+            
+            for (const pdfFile of availablePDFs) {
+                // Extract year from filename (first 4 characters)
+                const year = pdfFile.substring(0, 4);
+                
+                // Try to find matching BibTeX entry
+                const matchingEntry = bibEntries.find(entry => {
+                    if (entry.year !== year) return false;
+                    
+                    // Try to match by author last name
+                    const pdfLower = pdfFile.toLowerCase();
+                    const authorLastName = entry.author ? entry.author.split(',')[0].split(' ').pop().toLowerCase() : '';
+                    if (authorLastName && pdfLower.includes(authorLastName)) {
+                        return true;
+                    }
+                    
+                    // Try to match by title keywords
+                    const titleWords = entry.title ? entry.title.toLowerCase().split(' ').slice(0, 3) : [];
+                    return titleWords.some(word => word.length > 3 && pdfLower.includes(word));
+                });
+                
+                if (matchingEntry) {
+                    papers.push({
+                        year: matchingEntry.year,
+                        title: matchingEntry.title,
+                        authors: matchingEntry.author || "Unknown",
+                        venue: matchingEntry.journal || matchingEntry.booktitle || "Unknown",
+                        bibkey: matchingEntry.bibkey,
+                        filename: pdfFile // Use actual PDF filename
+                    });
+                } else {
+                    // Create entry from filename if no BibTeX match found
+                    const parts = pdfFile.split(' - ');
+                    const title = parts.length > 2 ? parts.slice(2).join(' - ').replace('.pdf', '') : pdfFile.replace('.pdf', '');
+                    
+                    papers.push({
+                        year: year,
+                        title: title,
+                        authors: "Unknown",
+                        venue: "Unknown",
+                        bibkey: `unknown_${year}_${Math.random().toString(36).substr(2, 9)}`,
+                        filename: pdfFile
+                    });
+                }
+            }
+            
+            return papers;
+        }
+
+        // Function to load BibTeX entries
+        async function loadBibTexEntries() {
+            try {
+                const response = await fetch('references.bib');
+                const bibContent = await response.text();
+                return parseBibTeX(bibContent);
+            } catch (error) {
+                console.error('Error loading references.bib:', error);
+                return [];
+            }
+        }
+
+        // Function to load and parse references.bib
+        async function loadReferences() {
+            try {
+                // First load available PDFs
+                await loadAvailablePDFs();
+                
+                // Then create papers from PDFs and match to BibTeX
+                papers = await createPapersFromPDFs();
+                filteredPapers = [...papers];
+                
+                // Update statistics
+                document.getElementById('totalPapers').textContent = papers.length;
+                document.getElementById('visiblePapers').textContent = papers.length;
+                
+                if (papers.length > 0) {
+                    const years = papers.map(p => parseInt(p.year));
+                    const yearSpan = Math.max(...years) - Math.min(...years);
+                    document.getElementById('yearSpan').textContent = yearSpan;
+                    
+                    // Update topic filters (only after topic config is loaded)
+                    if (topicConfig) {
+                        updateTopicFilters();
+                    }
+                }
+                
+                renderPapers(filteredPapers);
+            } catch (error) {
+                console.error('Error loading papers:', error);
+                // Fallback to static data if loading fails
+                loadFallbackData();
+            }
+        }
+
+        // Function to extract topics from paper titles using loaded configuration
+        function extractTopics(papers) {
+            if (!topicConfig) return [];
+            
+            const topicCounts = {};
+            const settings = topicConfig.settings;
+            
+            papers.forEach(paper => {
+                const title = settings.caseSensitive ? paper.title : paper.title.toLowerCase();
+                
+                Object.keys(topicConfig.topics).forEach(topic => {
+                    const keywords = topicConfig.topics[topic];
+                    const hasKeyword = keywords.some(keyword => {
+                        const searchKeyword = settings.caseSensitive ? keyword : keyword.toLowerCase();
+                        return settings.exactMatch ? 
+                            title.split(/\s+/).includes(searchKeyword) : 
+                            title.includes(searchKeyword);
+                    });
+                    
+                    if (hasKeyword) {
+                        topicCounts[topic] = (topicCounts[topic] || 0) + 1;
+                    }
+                });
+            });
+            
+            // Return topics with at least minPapersPerTopic papers, sorted by count
+            return Object.entries(topicCounts)
+                .filter(([topic, count]) => count >= settings.minPapersPerTopic)
+                .sort(([,a], [,b]) => b - a)
+                .map(([topic, count]) => ({ topic, count }));
+        }
+
+        // Function to update topic filters based on available papers
+        function updateTopicFilters() {
+            const topics = extractTopics(papers);
+            const filtersContainer = document.querySelector('.filters');
+            
+            // Keep the "All Topics" button
+            const allTopicsBtn = filtersContainer.querySelector('[data-topic="all"]');
+            if (allTopicsBtn) {
+                allTopicsBtn.textContent = 'All Topics';
+                allTopicsBtn.dataset.topic = 'all';
+            }
+            
+            // Clear existing topic buttons (but keep "All Topics")
+            const topicButtons = filtersContainer.querySelectorAll('[data-topic]:not([data-topic="all"])');
+            topicButtons.forEach(btn => btn.remove());
+            
+            topics.forEach(({ topic, count }) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.topic = topic;
+                btn.textContent = `${topic} (${count})`;
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterPapers();
+                });
+                filtersContainer.appendChild(btn);
+            });
+        }
+
+        // Fallback data in case references.bib is not available
+        function loadFallbackData() {
+            papers = [
+                {
+                    year: "1994",
+                    title: "Evolving virtual creatures",
+                    authors: "Sims",
+                    venue: "Proceedings of the 21st annual conference on Computer graphics and interactive techniques - SIGGRAPH 94",
+                    filename: "1994 - Proceedings of the 21st annual conference on Computer graphics and interactive techniques - SIGGRAPH 94 - Sims - Evolving virtual creatures.pdf",
+                    bibkey: "sims1994evolving"
+                },
+                {
+                    year: "2017",
+                    title: "Topology optimization of planar linkage mechanisms for path generation without prescribed timing",
+                    authors: "Han, In Kim, Kim",
+                    venue: "Struct. Multidiscip. Optim.",
+                    filename: "2017 - Struct. Multidiscip. Optim. - Han, In Kim, Kim - Topology optimization of planar linkage mechanisms for path generation without prescribed timing.pdf",
+                    bibkey: "han2017topology"
+                },
+                {
+                    year: "2023",
+                    title: "4D topology optimization Integrated optimization of the structure and self-actuation of soft bodies for dynamic motions",
+                    authors: "Yuhn, Sato, Kobayashi et al.",
+                    venue: "Comput. Methods Appl. Mech. Eng.",
+                    filename: "2023 - Comput. Methods Appl. Mech. Eng. - Yuhn, Sato, Kobayashi et al. - 4D topology optimization Integrated optimization of the structure and self-actuation of soft bodies for dynamic motions.pdf",
+                    bibkey: "yuhn20234d"
+                },
+                {
+                    year: "2023",
+                    title: "Topology optimization of locomoting soft bodies using material point method",
+                    authors: "Sato, Kobayashi, Yuhn et al.",
+                    venue: "Struct. Multidiscip. Optim.",
+                    filename: "2023 - Struct. Multidiscip. Optim. - Sato, Kobayashi, Yuhn et al. - Topology optimization of locomoting soft bodies using material point method.pdf",
+                    bibkey: "sato2023topology"
+                },
+                {
+                    year: "2024",
+                    title: "Computational co-design of structure and feedback controller for locomoting soft robots",
+                    authors: "Sato, Yuhn, Kobayashi et al.",
+                    venue: "arXiv",
+                    filename: "2024 - arXiv - Sato, Yuhn, Kobayashi et al. - Computational co-design of structure and feedback controller for locomoting soft robots.pdf",
+                    bibkey: "sato2024computational"
+                },
+                {
+                    year: "2025",
+                    title: "Neural Co-Optimization of Structural Topology, Manufacturable Layers, and Path Orientations for Fiber-Reinforced Composites",
+                    authors: "Liu, Zhang, Chen et al.",
+                    venue: "arXiv",
+                    filename: "2025 - arXiv - Liu, Zhang, Chen et al. - Neural Co-Optimization of Structural Topology, Manufacturable Layers, and Path Orientations for Fiber-Reinforced Composites.pdf",
+                    bibkey: "liu2025neural"
+                }
+            ];
+            filteredPapers = [...papers];
+            
+            // Update topic filters if config is loaded
+            if (topicConfig) {
+                updateTopicFilters();
+            }
+            
+            renderPapers(filteredPapers);
+        }
+
+        function createPaperCard(paper) {
+            const paperLabel = getPaperLabel(paper.bibkey);
+            const labelStyle = paperLabel && labelConfig[paperLabel] ? 
+                `background: ${labelConfig[paperLabel].color};` : 
+                'display: none;';
+            
+            return `
+                <div class="paper-card" data-year="${paper.year}" data-label="${paperLabel || 'none'}">
+                    ${paperLabel ? `<div class="paper-label" style="${labelStyle}"></div>` : ''}
+                    <div class="paper-year">${paper.year}</div>
+                    <div class="paper-title">${paper.title}</div>
+                    <div class="paper-authors">${paper.authors}</div>
+                    <div class="paper-venue">${paper.venue}</div>
+                    <div class="paper-actions">
+                        <a href="bib/${paper.filename}" class="btn btn-primary" target="_blank">
+                            📄 Open PDF
+                        </a>
+                        <button class="btn btn-secondary" onclick="copyCitation(event, '${paper.bibkey}')">
+                            📋 Copy Cite
+                        </button>
+                        <div class="label-dropdown">
+                            <button class="btn label-btn" onclick="toggleColorPicker(event, '${paper.bibkey}')">
+                                🏷️ Label
+                            </button>
+                            <div class="color-picker" id="picker-${paper.bibkey}">
+                                <div class="color-strip">
+                                    <div class="color-option" style="background: #ff6b6b;" onclick="setPaperLabel('${paper.bibkey}', 'color1')" title="Red"></div>
+                                    <div class="color-option" style="background: #4ecdc4;" onclick="setPaperLabel('${paper.bibkey}', 'color2')" title="Teal"></div>
+                                    <div class="color-option" style="background: #45b7d1;" onclick="setPaperLabel('${paper.bibkey}', 'color3')" title="Blue"></div>
+                                    <div class="color-option" style="background: #96ceb4;" onclick="setPaperLabel('${paper.bibkey}', 'color4')" title="Green"></div>
+                                    <div class="color-option" style="background: #feca57;" onclick="setPaperLabel('${paper.bibkey}', 'color5')" title="Yellow"></div>
+                                    <div class="color-option" style="background: #ff9ff3;" onclick="setPaperLabel('${paper.bibkey}', 'color6')" title="Pink"></div>
+                                    <div class="color-option" style="background: #54a0ff;" onclick="setPaperLabel('${paper.bibkey}', 'color7')" title="Light Blue"></div>
+                                    <div class="color-option" style="background: #ff7675;" onclick="setPaperLabel('${paper.bibkey}', 'color8')" title="Coral"></div>
+                                    <div class="color-option" style="background: #a29bfe;" onclick="setPaperLabel('${paper.bibkey}', 'color9')" title="Purple"></div>
+                                    <div class="color-option" style="background: #fd79a8;" onclick="setPaperLabel('${paper.bibkey}', 'color10')" title="Magenta"></div>
+                                    <div class="color-option remove" onclick="setPaperLabel('${paper.bibkey}', 'none')" title="Remove Label"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPapers(papersToRender) {
+            const grid = document.getElementById('papersGrid');
+            
+            if (papersToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <h3>No papers found</h3>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = papersToRender.map(createPaperCard).join('');
+            }
+            
+            document.getElementById('visiblePapers').textContent = papersToRender.length;
+        }
+
+        function filterPapers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const activeTopicBtn = document.querySelector('.filter-btn.active');
+            const activeTopic = activeTopicBtn.dataset.topic;
+            const activeLabelBtn = document.querySelector('.label-filter-btn.active');
+            const activeLabel = activeLabelBtn.dataset.label;
+            
+            filteredPapers = papers.filter(paper => {
+                const matchesSearch = paper.title.toLowerCase().includes(searchTerm) ||
+                                    paper.authors.toLowerCase().includes(searchTerm) ||
+                                    paper.venue.toLowerCase().includes(searchTerm);
+                
+                let matchesTopic = true;
+                if (activeTopic !== 'all' && topicConfig) {
+                    // Check if paper title contains keywords for this topic using config
+                    const keywords = topicConfig.topics[activeTopic] || [];
+                    const settings = topicConfig.settings;
+                    const title = settings.caseSensitive ? paper.title : paper.title.toLowerCase();
+                    
+                    matchesTopic = keywords.some(keyword => {
+                        const searchKeyword = settings.caseSensitive ? keyword : keyword.toLowerCase();
+                        return settings.exactMatch ? 
+                            title.split(/\s+/).includes(searchKeyword) : 
+                            title.includes(searchKeyword);
+                    });
+                }
+                
+                let matchesLabel = true;
+                if (activeLabel !== 'all') {
+                    const paperLabel = getPaperLabel(paper.bibkey);
+                    if (activeLabel === 'none') {
+                        matchesLabel = !paperLabel;
+                    } else {
+                        matchesLabel = paperLabel === activeLabel;
+                    }
+                }
+                
+                return matchesSearch && matchesTopic && matchesLabel;
+            });
+            
+            renderPapers(filteredPapers);
+        }
+
+        function copyCitation(event, bibkey) {
+            const citation = `\\cite{${bibkey}}`;
+            const btn = event.target;
+            
+            navigator.clipboard.writeText(citation).then(() => {
+                // Store original state
+                const originalText = btn.innerHTML;
+                const originalBackground = btn.style.backgroundColor;
+                const originalColor = btn.style.color;
+                
+                // Change to success state
+                btn.innerHTML = '✅ Copied!';
+                btn.style.backgroundColor = '#28a745';
+                btn.style.color = 'white';
+                btn.style.border = '1px solid #28a745';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = originalBackground;
+                    btn.style.color = originalColor;
+                    btn.style.border = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy citation:', err);
+                // Store original state
+                const originalText = btn.innerHTML;
+                const originalBackground = btn.style.backgroundColor;
+                const originalColor = btn.style.color;
+                
+                // Change to error state
+                btn.innerHTML = '❌ Failed!';
+                btn.style.backgroundColor = '#dc3545';
+                btn.style.color = 'white';
+                btn.style.border = '1px solid #dc3545';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = originalBackground;
+                    btn.style.color = originalColor;
+                    btn.style.border = '';
+                }, 2000);
+            });
+        }
+
+        // Function to toggle color picker
+        function toggleColorPicker(event, bibkey) {
+            event.stopPropagation();
+            
+            // Close all other color pickers
+            document.querySelectorAll('.color-picker').forEach(picker => {
+                if (picker.id !== `picker-${bibkey}`) {
+                    picker.classList.remove('show');
+                }
+            });
+            
+            // Toggle current color picker
+            const picker = document.getElementById(`picker-${bibkey}`);
+            picker.classList.toggle('show');
+        }
+
+        // Close color pickers when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('.label-btn')) {
+                document.querySelectorAll('.color-picker').forEach(picker => {
+                    picker.classList.remove('show');
+                });
+            }
+        });
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterPapers);
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterPapers();
+            });
+        });
+
+        // Add event listeners for label filter buttons
+        document.querySelectorAll('.label-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.label-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterPapers();
+            });
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load labels from localStorage
+            loadLabels();
+            
+            const configLoaded = await loadTopicConfig();
+            const statusDiv = document.getElementById('configStatus');
+            
+            if (configLoaded) {
+                statusDiv.textContent = '✅ Custom topic configuration loaded';
+                statusDiv.style.color = '#28a745';
+            } else {
+                statusDiv.textContent = '⚠️ Using default topic configuration (topic_config.json not found)';
+                statusDiv.style.color = '#ffc107';
+            }
+            
+            await loadReferences();
+        });
+    </script>
+</body>
+</html>

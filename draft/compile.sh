@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Check if there are any .md files in the draft folder
+if ! ls draft/*.md 1> /dev/null 2>&1; then
+    echo "No Markdown files found in the draft folder. Skipping conversion."
+else
+    # Convert all .md files in the draft folder to .tex using pandoc
+    for md_file in draft/*.md; do
+        tex_file="${md_file%.md}.tex"
+        echo "Converting $md_file to $tex_file..."
+        pandoc "$md_file" -o "$tex_file" --metadata link-citations=true --sourcepos
+        if [[ $? -ne 0 ]]; then
+            echo "Error: Failed to convert $md_file to $tex_file."
+            exit 1
+        fi
+    done
+fi
+
 # Define the input LaTeX file
 INPUT_FILE="main.tex"
 
@@ -11,7 +27,7 @@ fi
 
 # Run pdflatex to compile the file
 echo "Compiling $INPUT_FILE..."
-xelatex -interaction=nonstopmode "$INPUT_FILE" > compile.log
+pdflatex -synctex=1 -interaction=nonstopmode "$INPUT_FILE" > compile.log
 
 # Check if the compilation was successful
 if grep -q "Fatal error" compile.log; then
