@@ -1,0 +1,59 @@
+UNUSED CODE DETECTION REPORT
+============================================================
+Total files: 65
+Used files: 20
+Unused files: 41
+Usage rate: 30.8%
+
+UNUSED FILES:
+  - __pycache__/detect_unused_code.cpython-312.pyc
+  - assets/main10.pdf
+  - assets/main11.pdf
+  - assets/main2.pdf
+  - assets/main3.pdf
+  - assets/main4.pdf
+  - assets/main5.pdf
+  - assets/main6.pdf
+  - assets/main7.pdf
+  - assets/main8.pdf
+  - assets/main9.pdf
+  - draft/ACM-Reference-Format.bst
+  - draft/acm-jdslogo.png
+  - draft/acmart-tagged.cls
+  - draft/acmart.bib
+  - draft/acmart.cls
+  - draft/acmart.dtx
+  - draft/acmart.ins
+  - draft/acmauthoryear.bbx
+  - draft/acmauthoryear.cbx
+  - draft/acmdatamodel.dbx
+  - draft/acmguide.pdf
+  - draft/acmnumeric.bbx
+  - draft/acmnumeric.cbx
+  - draft/compile.log
+  - draft/main.out
+  - draft/sample-franklin.png
+  - draft/sample-sigconf-authordraft.tex
+  - draft/sample-sigconf-biblatex.tex
+  - draft/sample-sigconf-i13n.tex
+  - draft/sample-sigconf-lualatex.tex
+  - draft/sample-sigconf-xelatex.tex
+  - draft/sample-sigconf.tex
+  - draft/sampleteaser.pdf
+  - draft/software.bib
+  - proposal/README
+  - proposal/arxiv.sty
+  - proposal/img/FNO_nvstokes.png
+  - proposal/paper.tex
+  - test_unused_code_detection.py
+  - unused_code_report.txt
+
+SAMPLE/TEMPLATE FILES:
+  - draft/sample-base.bib
+  - draft/sample-franklin.png
+  - draft/sample-sigconf-authordraft.tex
+  - draft/sample-sigconf-biblatex.tex
+  - draft/sample-sigconf-i13n.tex
+  - draft/sample-sigconf-lualatex.tex
+  - draft/sample-sigconf-xelatex.tex
+  - draft/sample-sigconf.tex
