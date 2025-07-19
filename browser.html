@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature Browser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .papers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .paper-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .paper-year {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .paper-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .paper-authors {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .paper-journal {
+            color: #888;
+            font-size: 13px;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .paper-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-success {
+            background: #28a745 !important;
+            color: white !important;
+            border: 1px solid #28a745 !important;
+        }
+
+        .btn-success:hover {
+            background: #218838 !important;
+        }
+
+        /* Color labels */
+        .paper-card.color-1 { border-left: 8px solid #ff6b6b; background: linear-gradient(to right, rgba(255, 107, 107, 0.1), white); }
+        .paper-card.color-2 { border-left: 8px solid #4ecdc4; background: linear-gradient(to right, rgba(78, 205, 196, 0.1), white); }
+        .paper-card.color-3 { border-left: 8px solid #45b7d1; background: linear-gradient(to right, rgba(69, 183, 209, 0.1), white); }
+        .paper-card.color-4 { border-left: 8px solid #96ceb4; background: linear-gradient(to right, rgba(150, 206, 180, 0.1), white); }
+        .paper-card.color-5 { border-left: 8px solid #feca57; background: linear-gradient(to right, rgba(254, 202, 87, 0.1), white); }
+        .paper-card.color-6 { border-left: 8px solid #ff9ff3; background: linear-gradient(to right, rgba(255, 159, 243, 0.1), white); }
+        .paper-card.color-7 { border-left: 8px solid #54a0ff; background: linear-gradient(to right, rgba(84, 160, 255, 0.1), white); }
+        .paper-card.color-8 { border-left: 8px solid #ff7675; background: linear-gradient(to right, rgba(255, 118, 117, 0.1), white); }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .papers-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Literature Browser</h1>
+            <p>Click on papers to change their color labels</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search papers by title, author, or journal..." id="searchInput">
+        </div>
+
+        <div class="papers-grid" id="papersGrid">
+            <!-- Papers will be populated by JavaScript -->
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalPapers">0</div>
+                <div class="stat-label">Total Papers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="visiblePapers">0</div>
+                <div class="stat-label">Visible Papers</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let papers = [];
+        let filteredPapers = [];
+        let paperColors = {}; // Store paper colors in localStorage
+
+        // Load paper colors from localStorage
+        function loadColors() {
+            const stored = localStorage.getItem('paperColors');
+            paperColors = stored ? JSON.parse(stored) : {};
+        }
+
+        // Save paper colors to localStorage
+        function saveColors() {
+            localStorage.setItem('paperColors', JSON.stringify(paperColors));
+        }
+
+        // Cycle through colors (0 = no color, 1-8 = different colors)
+        function cycleColor(filename) {
+            const currentColor = paperColors[filename] || 0;
+            const nextColor = (currentColor + 1) % 9; // 0-8 (0 is no color)
+            
+            if (nextColor === 0) {
+                delete paperColors[filename];
+            } else {
+                paperColors[filename] = nextColor;
+            }
+            
+            saveColors();
+            renderPapers(filteredPapers);
+        }
+
+        // Load available PDF files from bib directory
+        async function loadPDFs() {
+            try {
+                const response = await fetch('bib/');
+                const html = await response.text();
+                
+                // Parse HTML directory listing to extract PDF filenames
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const links = doc.querySelectorAll('a[href$=".pdf"]');
+                
+                const pdfFiles = Array.from(links).map(link => 
+                    decodeURIComponent(link.getAttribute('href'))
+                );
+                
+                console.log('Found PDF files:', pdfFiles);
+                return pdfFiles;
+            } catch (error) {
+                console.warn('Could not load PDF directory listing, using fallback');
+                // Fallback to known PDF files
+                return [
+                    "1994 - Proceedings of the 21st annual conference on Computer graphics and interactive techniques - SIGGRAPH 94 - Sims - Evolving virtual creatures.pdf",
+                    "2017 - Struct. Multidiscip. Optim. - Han, In Kim, Kim - Topology optimization of planar linkage mechanisms for path generation without prescribed timing.pdf",
+                    "2023 - Comput. Methods Appl. Mech. Eng. - Yuhn, Sato, Kobayashi et al. - 4D topology optimization Integrated optimization of the structure and self-actuation of soft bodies for dynamic motions.pdf",
+                    "2023 - Struct. Multidiscip. Optim. - Sato, Kobayashi, Yuhn et al. - Topology optimization of locomoting soft bodies using material point method.pdf",
+                    "2024 - arXiv - Sato, Yuhn, Kobayashi et al. - Computational co-design of structure and feedback controller for locomoting soft robots.pdf",
+                    "2025 - arXiv - Liu, Zhang, Chen et al. - Neural Co-Optimization of Structural Topology, Manufacturable Layers, and Path Orientations for Fiber-Reinforced Composites.pdf"
+                ];
+            }
+        }
+
+        // Parse filename to extract paper information
+        function parseFilename(filename) {
+            const parts = filename.split(' - ');
+            const year = parts[0] || "Unknown";
+            const journal = parts[1] || "Unknown";
+            
+            // Extract title and authors (everything after second dash, remove .pdf)
+            let titleAndAuthors = "";
+            if (parts.length > 2) {
+                titleAndAuthors = parts.slice(2).join(' - ').replace('.pdf', '');
+            }
+            
+            // Try to separate authors and title
+            // Common pattern: "Authors - Title" or just "Title"
+            const titleParts = titleAndAuthors.split(' - ');
+            let authors = "Unknown";
+            let title = titleAndAuthors;
+            
+            if (titleParts.length >= 2) {
+                // Assume first part is authors, rest is title
+                authors = titleParts[0];
+                title = titleParts.slice(1).join(' - ');
+            }
+            
+            // Create a simple bibkey from filename
+            const bibkey = filename
+                .replace('.pdf', '')
+                .replace(/[^a-zA-Z0-9]/g, '_')
+                .toLowerCase()
+                .substring(0, 50);
+            
+            return {
+                year,
+                title,
+                authors,
+                journal,
+                filename,
+                bibkey
+            };
+        }
+
+        // Create papers from PDF files
+        async function createPapers() {
+            const pdfFiles = await loadPDFs();
+            
+            papers = pdfFiles.map(filename => parseFilename(filename));
+            filteredPapers = [...papers];
+            
+            console.log(`Created ${papers.length} paper entries`);
+            return papers;
+        }
+
+        // Create paper card HTML
+        function createPaperCard(paper) {
+            const colorClass = paperColors[paper.filename] ? `color-${paperColors[paper.filename]}` : '';
+            
+            return `
+                <div class="paper-card ${colorClass}" onclick="cycleColor('${paper.filename}')">
+                    <div class="paper-year">${paper.year}</div>
+                    <div class="paper-title">${paper.title}</div>
+                    <div class="paper-authors">${paper.authors}</div>
+                    <div class="paper-journal">${paper.journal}</div>
+                    <div class="paper-actions" onclick="event.stopPropagation()">
+                        <a href="bib/${paper.filename}" class="btn btn-primary" target="_blank">
+                            📄 View PDF
+                        </a>
+                        <button class="btn btn-secondary" onclick="copyCitation(event, '${paper.bibkey}')">
+                            📋 Copy Cite
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render papers to the grid
+        function renderPapers(papersToRender) {
+            const grid = document.getElementById('papersGrid');
+            
+            if (papersToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <h3>No papers found</h3>
+                        <p>Try adjusting your search</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = papersToRender.map(createPaperCard).join('');
+            }
+            
+            // Update stats
+            document.getElementById('totalPapers').textContent = papers.length;
+            document.getElementById('visiblePapers').textContent = papersToRender.length;
+        }
+
+        // Filter papers based on search
+        function filterPapers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredPapers = papers.filter(paper => {
+                return paper.title.toLowerCase().includes(searchTerm) ||
+                       paper.authors.toLowerCase().includes(searchTerm) ||
+                       paper.journal.toLowerCase().includes(searchTerm);
+            });
+            
+            renderPapers(filteredPapers);
+        }
+
+        // Copy citation to clipboard
+        function copyCitation(event, bibkey) {
+            const citation = `\\cite{${bibkey}}`;
+            const btn = event.target;
+            
+            navigator.clipboard.writeText(citation).then(() => {
+                // Store original state
+                const originalText = btn.innerHTML;
+                const originalBackground = btn.style.backgroundColor;
+                const originalColor = btn.style.color;
+                
+                // Change to success state
+                btn.innerHTML = '✅ Copied!';
+                btn.style.backgroundColor = '#28a745';
+                btn.style.color = 'white';
+                btn.style.border = '1px solid #28a745';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = originalBackground;
+                    btn.style.color = originalColor;
+                    btn.style.border = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy citation:', err);
+                
+                // Store original state
+                const originalText = btn.innerHTML;
+                const originalBackground = btn.style.backgroundColor;
+                const originalColor = btn.style.color;
+                
+                // Change to error state
+                btn.innerHTML = '❌ Failed!';
+                btn.style.backgroundColor = '#dc3545';
+                btn.style.color = 'white';
+                btn.style.border = '1px solid #dc3545';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.backgroundColor = originalBackground;
+                    btn.style.color = originalColor;
+                    btn.style.border = '';
+                }, 2000);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterPapers);
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            loadColors();
+            await createPapers();
+            renderPapers(filteredPapers);
+        });
+    </script>
+</body>
+</html>
