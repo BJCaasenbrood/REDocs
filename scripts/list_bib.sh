@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# Check if the "bib" folder exists
-if [ ! -d "bib" ]; then
-    echo "Error: 'bib' folder does not exist in the current directory."
+# Change to the parent directory (REDocs root)
+cd "$(dirname "$0")/.."
+
+# Check if the "draft/bib" folder exists
+if [ ! -d "draft/bib" ]; then
+    echo "Error: 'draft/bib' folder does not exist in the current directory."
     exit 1
 fi
 
@@ -12,9 +15,9 @@ if ! command -v code &> /dev/null; then
     exit 1
 fi
 
-# List all PDF file names in the 'bib' directory as clickable links
-echo "Listing all PDF files './bib' folder:"
-for pdf in bib/*.pdf; do
+# List all PDF file names in the 'draft/bib' directory as clickable links
+echo "Listing all PDF files in './draft/bib' folder:"
+for pdf in draft/bib/*.pdf; do
     if [[ -e "$pdf" ]]; then
         # Generate a clickable hyperlink (using ANSI escape sequences)
         file_path=$(realpath "$pdf")

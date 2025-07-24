@@ -1,0 +1,73 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: references.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--page numbers missing in both pages and numpages fields in allison2013plantlimited
+Warning--page numbers missing in both pages and numpages fields in bravopalacios2020one
+Warning--no number and no volume in li2020fourier
+Warning--page numbers missing in both pages and numpages fields in li2020fourier
+Warning--no number and no volume in lippe2023pderefiner
+Warning--page numbers missing in both pages and numpages fields in lippe2023pderefiner
+Warning--page numbers missing in both pages and numpages fields in mirzendehdel2023codesign
+Warning--page numbers missing in both pages and numpages fields in sato2023topology
+Warning--no number and no volume in sato2024computational
+Warning--page numbers missing in both pages and numpages fields in sato2024computational
+Warning--no number and no volume in sims1991artificial
+Warning--page numbers missing in both pages and numpages fields in sims1991artificial
+Warning--no number and no volume in sims1994evolving
+Warning--page numbers missing in both pages and numpages fields in sims1994evolving
+Warning--no number and no volume in strgar2025accelerated
+Warning--page numbers missing in both pages and numpages fields in strgar2025accelerated
+Warning--page numbers missing in both pages and numpages fields in yuhn20234d
+You've used 11 entries,
+            6273 wiz_defined-function locations,
+            1596 strings with 21041 characters,
+and the built_in function-call counts, 11733 in all, are:
+= -- 1865
+> -- 403
+< -- 0
++ -- 133
+- -- 142
+* -- 870
+:= -- 1094
+add.period$ -- 55
+call.type$ -- 11
+change.case$ -- 82
+chr.to.int$ -- 11
+cite$ -- 28
+duplicate$ -- 892
+empty$ -- 650
+format.name$ -- 174
+if$ -- 3060
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 44
+newline$ -- 141
+num.names$ -- 77
+pop$ -- 377
+preamble$ -- 1
+purify$ -- 170
+quote$ -- 0
+skip$ -- 258
+stack$ -- 0
+substring$ -- 652
+swap$ -- 44
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 176
+warning$ -- 17
+while$ -- 53
+width$ -- 0
+write$ -- 250
+(There were 17 warnings)

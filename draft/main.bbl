@@ -1,0 +1,184 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{11}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Allison(2013)]%
+        {allison2013plantlimited}
+\bibfield{author}{\bibinfo{person}{James~T. Allison}.}
+  \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{Plant-Limited Co-Design of an Energy-Efficient
+  Counterbalanced Robotic Manipulator}.
+\newblock \bibinfo{journal}{\emph{Journal of Mechanical Design}}
+  \bibinfo{volume}{135} (\bibinfo{date}{8} \bibinfo{year}{2013}).
+\newblock
+Issue 10.
+\href{https://doi.org/10.1115/1.4024978}{doi:\nolinkurl{10.1115/1.4024978}}
+
+
+\bibitem[Bravo-Palacios et~al\mbox{.}(2020)]%
+        {bravopalacios2020one}
+\bibfield{author}{\bibinfo{person}{Gabriel Bravo-Palacios},
+  \bibinfo{person}{A.~Del Prete}, {and} \bibinfo{person}{Patrick~M. Wensing}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{One Robot for Many Tasks: Versatile Co-Design
+  Through Stochastic Programming}.
+\newblock \bibinfo{journal}{\emph{IEEE Robotics and Automation Letters}}
+  \bibinfo{volume}{5} (\bibinfo{date}{4} \bibinfo{year}{2020}).
+\newblock
+Issue 2.
+\href{https://doi.org/10.1109/lra.2020.2969948}{doi:\nolinkurl{10.1109/lra.2020.2969948}}
+
+
+\bibitem[Li et~al\mbox{.}(2020)]%
+        {li2020fourier}
+\bibfield{author}{\bibinfo{person}{Zongyi Li}, \bibinfo{person}{Nikola
+  Kovachki}, \bibinfo{person}{Kamyar Azizzadenesheli},
+  \bibinfo{person}{Burigede Liu}, \bibinfo{person}{Kaushik Bhattacharya},
+  \bibinfo{person}{Andrew Stuart}, {and} \bibinfo{person}{Anima Anandkumar}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Fourier Neural Operator for Parametric Partial
+  Differential Equations}.
+\newblock \bibinfo{journal}{\emph{arXiv}} (\bibinfo{year}{2020}).
+\newblock
+\href{https://doi.org/10.48550/ARXIV.2010.08895}{doi:\nolinkurl{10.48550/ARXIV.2010.08895}}
+
+
+\bibitem[Lippe et~al\mbox{.}(2023)]%
+        {lippe2023pderefiner}
+\bibfield{author}{\bibinfo{person}{Phillip Lippe}, \bibinfo{person}{Bastiaan~S.
+  Veeling}, \bibinfo{person}{Paris Perdikaris}, \bibinfo{person}{Richard~E.
+  Turner}, {and} \bibinfo{person}{Johannes Brandstetter}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{PDE-Refiner: Achieving Accurate Long Rollouts with
+  Neural PDE Solvers}.
+\newblock \bibinfo{journal}{\emph{arXiv}} (\bibinfo{year}{2023}).
+\newblock
+\href{https://doi.org/10.48550/ARXIV.2308.05732}{doi:\nolinkurl{10.48550/ARXIV.2308.05732}}
+
+
+\bibitem[Mirzendehdel and Behandish(2023)]%
+        {mirzendehdel2023codesign}
+\bibfield{author}{\bibinfo{person}{Amir~M. Mirzendehdel} {and}
+  \bibinfo{person}{Morad Behandish}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Co-design Optimization of Moving Parts for
+  Compliance and Collision Avoidance}.
+\newblock \bibinfo{journal}{\emph{Computer-Aided Design}}
+  \bibinfo{volume}{163} (\bibinfo{date}{10} \bibinfo{year}{2023}).
+\newblock
+\href{https://doi.org/10.1016/j.cad.2023.103547}{doi:\nolinkurl{10.1016/j.cad.2023.103547}}
+
+
+\bibitem[Sato et~al\mbox{.}(2023)]%
+        {sato2023topology}
+\bibfield{author}{\bibinfo{person}{Yuki Sato}, \bibinfo{person}{Hiroki
+  Kobayashi}, \bibinfo{person}{Changyoung Yuhn}, \bibinfo{person}{Atsushi
+  Kawamoto}, \bibinfo{person}{Tsuyoshi Nomura}, {and} \bibinfo{person}{Noboru
+  Kikuchi}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{Topology optimization of locomoting soft bodies
+  using material point method}.
+\newblock \bibinfo{journal}{\emph{Structural and Multidisciplinary
+  Optimization}}  \bibinfo{volume}{66} (\bibinfo{date}{2}
+  \bibinfo{year}{2023}).
+\newblock
+Issue 3.
+\href{https://doi.org/10.1007/s00158-023-03502-2}{doi:\nolinkurl{10.1007/s00158-023-03502-2}}
+
+
+\bibitem[Sato et~al\mbox{.}(2024)]%
+        {sato2024computational}
+\bibfield{author}{\bibinfo{person}{Yuki Sato}, \bibinfo{person}{Changyoung
+  Yuhn}, \bibinfo{person}{Hiroki Kobayashi}, \bibinfo{person}{Atsushi
+  Kawamoto}, {and} \bibinfo{person}{Tsuyoshi Nomura}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Computational co-design of structure and feedback
+  controller for locomoting soft robots}.
+\newblock \bibinfo{journal}{\emph{arXiv}} (\bibinfo{year}{2024}).
+\newblock
+\href{https://doi.org/10.48550/ARXIV.2407.09270}{doi:\nolinkurl{10.48550/ARXIV.2407.09270}}
+
+
+\bibitem[Sims(1991)]%
+        {sims1991artificial}
+\bibfield{author}{\bibinfo{person}{Karl Sims}.}
+  \bibinfo{year}{1991}\natexlab{}.
+\newblock \showarticletitle{Artificial evolution for computer graphics}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 18th annual conference on
+  Computer graphics and interactive techniques}} (\bibinfo{date}{7}
+  \bibinfo{year}{1991}).
+\newblock
+\href{https://doi.org/10.1145/122718.122752}{doi:\nolinkurl{10.1145/122718.122752}}
+
+
+\bibitem[Sims(1994)]%
+        {sims1994evolving}
+\bibfield{author}{\bibinfo{person}{Karl Sims}.}
+  \bibinfo{year}{1994}\natexlab{}.
+\newblock \showarticletitle{Evolving virtual creatures}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 21st annual conference on
+  Computer graphics and interactive techniques - SIGGRAPH '94}}
+  (\bibinfo{year}{1994}).
+\newblock
+\href{https://doi.org/10.1145/192161.192167}{doi:\nolinkurl{10.1145/192161.192167}}
+
+
+\bibitem[Strgar and Kriegman(2025)]%
+        {strgar2025accelerated}
+\bibfield{author}{\bibinfo{person}{Luke Strgar} {and} \bibinfo{person}{Sam
+  Kriegman}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Accelerated co-design of robots through
+  morphological pretraining}.
+\newblock \bibinfo{journal}{\emph{arXiv}} (\bibinfo{year}{2025}).
+\newblock
+\href{https://doi.org/10.48550/ARXIV.2502.10862}{doi:\nolinkurl{10.48550/ARXIV.2502.10862}}
+
+
+\bibitem[Yuhn et~al\mbox{.}(2023)]%
+        {yuhn20234d}
+\bibfield{author}{\bibinfo{person}{Changyoung Yuhn}, \bibinfo{person}{Yuki
+  Sato}, \bibinfo{person}{Hiroki Kobayashi}, \bibinfo{person}{Atsushi
+  Kawamoto}, {and} \bibinfo{person}{Tsuyoshi Nomura}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{4D topology optimization: Integrated optimization
+  of the structure and self-actuation of soft bodies for dynamic motions}.
+\newblock \bibinfo{journal}{\emph{Computer Methods in Applied Mechanics and
+  Engineering}}  \bibinfo{volume}{414} (\bibinfo{date}{9}
+  \bibinfo{year}{2023}).
+\newblock
+\href{https://doi.org/10.1016/j.cma.2023.116187}{doi:\nolinkurl{10.1016/j.cma.2023.116187}}
+
+
+\end{thebibliography}

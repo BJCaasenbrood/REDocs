@@ -603,7 +603,7 @@
 \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\@thefnmark}}}
 \let\@footnotemark@nolink\@footnotemark
 \let\@footnotetext@nolink\@footnotetext
-\RequirePackage[bookmarksnumbered,unicode]{hyperref}
+\RequirePackage[bookmarksnumbered,unicode,colorlinks=true, citecolor=blue]{hyperref}
 \RequirePackage{hyperxmp}
 \pdfstringdefDisableCommands{%
   \def\addtocounter#1#2{}%
@@ -639,7 +639,7 @@
       urlcolor=ACMDarkBlue,
       filecolor=ACMDarkBlue}
     \else
-    \hypersetup{hidelinks}
+    % \hypersetup{hidelinks}
   \fi
   \hypersetup{pdflang={en},
     pdfdisplaydoctitle}}
@@ -720,7 +720,7 @@
    \geometry{twoside=true, head=13pt, foot=2pc,
      paperwidth=8.5in, paperheight=11in,
      includeheadfoot, columnsep=24pt,
-     top=52pt, bottom=75pt, inner=52pt, outer=52pt,
+     top=32pt, bottom=45pt, inner=52pt, outer=52pt,
      marginparwidth=2pc,heightrounded
      }%
 \or % sigconf
@@ -2156,22 +2156,22 @@
    disseminate the work on their personal and corporate Web sites with
    the appropriate attribution.
  \or % CC
-   \IfEq{\ACM@cc@type}{zero}{%
+  %  \IfEq{\ACM@cc@type}{zero}{%
      \def\ACM@CC@Url{https://creativecommons.org/publicdomain/zero/1.0}}{%
-  \edef\ACM@CC@Url{https://creativecommons.org/licenses/\ACM@cc@type/\ACM@cc@version}}%
-   \href{\ACM@CC@Url}{\includegraphics[height=5ex]{doclicense-CC-\ACM@cc@type-88x31}}\\
-   \href{\ACM@CC@Url}{%
-   This work is licensed under a Creative Commons
-   \IfEq{\ACM@cc@type}{zero}{CC0 1.0 Universal}{%
-     \IfEq{\ACM@cc@type}{by}{Attribution}{}%
-     \IfEq{\ACM@cc@type}{by-sa}{Attribution-ShareAlike}{}%
-     \IfEq{\ACM@cc@type}{by-nd}{Attribution-NoDerivatives}{}%
-     \IfEq{\ACM@cc@type}{by-nc}{Attribution-NonCommercial}{}%
-     \IfEq{\ACM@cc@type}{by-nc-sa}{Attribution-NonCommercial-ShareAlike}{}%
-     \IfEq{\ACM@cc@type}{by-nc-nd}{Attribution-NonCommercial-NoDerivatives}{}%
-     ~\IfEq{\ACM@cc@version}{4.0}{4.0 International}{3.0 Unported}%
-   }
-   License.}%
+  % \edef\ACM@CC@Url{https://creativecommons.org/licenses/\ACM@cc@type/\ACM@cc@version}}%
+  %  \href{\ACM@CC@Url}{\includegraphics[height=5ex]{doclicense-CC-\ACM@cc@type-88x31}}\\
+  %  \href{\ACM@CC@Url}{%
+  % %  This work is licensed under a Creative Commons
+  %  \IfEq{\ACM@cc@type}{zero}{CC0 1.0 Universal}{%
+  %    \IfEq{\ACM@cc@type}{by}{Attribution}{}%
+  %    \IfEq{\ACM@cc@type}{by-sa}{Attribution-ShareAlike}{}%
+  %    \IfEq{\ACM@cc@type}{by-nd}{Attribution-NoDerivatives}{}%
+  %    \IfEq{\ACM@cc@type}{by-nc}{Attribution-NonCommercial}{}%
+  %    \IfEq{\ACM@cc@type}{by-nc-sa}{Attribution-NonCommercial-ShareAlike}{}%
+  %    \IfEq{\ACM@cc@type}{by-nc-nd}{Attribution-NonCommercial-NoDerivatives}{}%
+  %    ~\IfEq{\ACM@cc@version}{4.0}{4.0 International}{3.0 Unported}%
+  %  }
+  %  License.}%
  \fi}
 %%
 \def\copyrightyear#1{\def\@copyrightyear{#1}}

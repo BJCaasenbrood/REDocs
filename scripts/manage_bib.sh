@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Change to the parent directory (REDocs root)
+cd "$(dirname "$0")/.."
+
 # REDocs Bibliography Management Script
 # This script helps manage PDFs and generate bibliography entries
 
-BIB_DIR="bib"
+BIB_DIR="draft/bib"
 BIB_FILE="draft/references.bib"
 
 # Create bib directory if it doesn't exist

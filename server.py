@@ -31,9 +31,9 @@ class LiteratureBrowserHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             
             # Execute the update_bib.sh script
-            print("📚 Executing update_bib.sh script...")
+            print("📚 Executing scripts/update_bib.sh script...")
             result = subprocess.run(
-                ['./update_bib.sh'], 
+                ['./scripts/update_bib.sh'], 
                 cwd=os.getcwd(),
                 capture_output=True, 
                 text=True, 
@@ -50,11 +50,11 @@ class LiteratureBrowserHandler(http.server.SimpleHTTPRequestHandler):
             
             # Log the result
             if result.returncode == 0:
-                print("✅ update_bib.sh completed successfully")
+                print("✅ scripts/update_bib.sh completed successfully")
                 if result.stdout:
                     print("Output:", result.stdout)
             else:
-                print(f"❌ update_bib.sh failed with return code {result.returncode}")
+                print(f"❌ scripts/update_bib.sh failed with return code {result.returncode}")
                 if result.stderr:
                     print("Error:", result.stderr)
             
@@ -73,7 +73,7 @@ class LiteratureBrowserHandler(http.server.SimpleHTTPRequestHandler):
                 'timeout': True
             }
             self.wfile.write(json.dumps(response).encode())
-            print("⏰ update_bib.sh timed out after 5 minutes")
+            print("⏰ scripts/update_bib.sh timed out after 5 minutes")
             
         except Exception as e:
             self.send_response(500)
@@ -86,7 +86,7 @@ class LiteratureBrowserHandler(http.server.SimpleHTTPRequestHandler):
                 'error': str(e)
             }
             self.wfile.write(json.dumps(response).encode())
-            print(f"❌ Error executing update_bib.sh: {e}")
+            print(f"❌ Error executing scripts/update_bib.sh: {e}")
     
     def do_OPTIONS(self):
         """Handle OPTIONS requests for CORS preflight"""
@@ -122,13 +122,13 @@ def main():
         print("❌ Could not find an available port")
         sys.exit(1)
     
-    # Ensure update_bib.sh is executable
-    update_bib_path = Path('./update_bib.sh')
+    # Ensure scripts/update_bib.sh is executable
+    update_bib_path = Path('./scripts/update_bib.sh')
     if update_bib_path.exists():
         os.chmod(update_bib_path, 0o755)
-        print("✅ Made update_bib.sh executable")
+        print("✅ Made scripts/update_bib.sh executable")
     else:
-        print("⚠️  Warning: update_bib.sh not found")
+        print("⚠️  Warning: scripts/update_bib.sh not found")
     
     # Start server
     try:

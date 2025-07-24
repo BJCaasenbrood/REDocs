@@ -285,10 +285,159 @@
             renderPapers(filteredPapers);
         }
 
-        // Load available PDF files from bib directory
+        // Load and parse references.bib file
+        async function loadBibEntries() {
+            try {
+                const response = await fetch('draft/references.bib');
+                const bibContent = await response.text();
+                
+                // Parse BibTeX entries to extract bibkeys and metadata
+                const entries = {};
+                const entryMatches = bibContent.match(/@\w+\s*\{[^@]*?\n\s*\}/gs);
+                
+                if (entryMatches) {
+                    entryMatches.forEach(entry => {
+                        // Extract bibkey
+                        const keyMatch = entry.match(/@\w+\s*\{\s*([^,\s]+)/);
+                        if (keyMatch) {
+                            const bibkey = keyMatch[1];
+                            
+                            // Extract title for matching
+                            const titleMatch = entry.match(/title\s*=\s*\{([^}]+)\}/i);
+                            const title = titleMatch ? titleMatch[1] : '';
+                            
+                            // Extract author for matching
+                            const authorMatch = entry.match(/author\s*=\s*\{([^}]+)\}/i);
+                            const author = authorMatch ? authorMatch[1] : '';
+                            
+                            // Extract year for matching
+                            const yearMatch = entry.match(/year\s*=\s*\{([^}]+)\}/i);
+                            const year = yearMatch ? yearMatch[1] : '';
+                            
+                            entries[bibkey] = {
+                                title,
+                                author,
+                                year,
+                                bibkey
+                            };
+                        }
+                    });
+                }
+                
+                console.log(`📚 Loaded ${Object.keys(entries).length} bib entries`);
+                Object.values(entries).forEach(entry => {
+                    console.log(`   - ${entry.bibkey}: "${entry.title}" (${entry.year})`);
+                });
+                
+                return entries;
+            } catch (error) {
+                console.warn('Could not load references.bib:', error);
+                return {};
+            }
+        }
+
+        // Calculate matching confidence between PDF filename and bib entry
+        function calculateMatchConfidence(filename, bibEntry) {
+            const cleanFilename = filename.toLowerCase().replace('.pdf', '');
+            let confidence = 0;
+            let matches = [];
+            
+            // Extract year from filename (first 4 characters)
+            const pdfYear = filename.substring(0, 4);
+            
+            // Year matching (high weight)
+            if (bibEntry.year && pdfYear === bibEntry.year.toString()) {
+                confidence += 30;
+                matches.push(`Year: ${pdfYear}`);
+            }
+            
+            // Title word matching
+            if (bibEntry.title) {
+                const titleWords = bibEntry.title.toLowerCase()
+                    .split(/[\s\-_,\.]+/)
+                    .filter(word => word.length > 3);
+                
+                let titleMatches = 0;
+                titleWords.forEach(word => {
+                    if (cleanFilename.includes(word)) {
+                        titleMatches++;
+                        matches.push(`Title word: "${word}"`);
+                    }
+                });
+                
+                if (titleWords.length > 0) {
+                    confidence += (titleMatches / titleWords.length) * 40;
+                }
+            }
+            
+            // Author matching
+            if (bibEntry.author) {
+                const authorWords = bibEntry.author.toLowerCase()
+                    .split(/[\s\-_,\.]+/)
+                    .filter(word => word.length > 2);
+                
+                let authorMatches = 0;
+                authorWords.forEach(word => {
+                    if (cleanFilename.includes(word)) {
+                        authorMatches++;
+                        matches.push(`Author: "${word}"`);
+                    }
+                });
+                
+                if (authorWords.length > 0) {
+                    confidence += (authorMatches / authorWords.length) * 30;
+                }
+            }
+            
+            return { confidence, matches, bibkey: bibEntry.bibkey };
+        }
+
+        // Find best matching bib entry for a PDF
+        function findBestBibMatch(filename, bibEntries) {
+            const candidates = [];
+            
+            // Calculate confidence for each bib entry
+            Object.values(bibEntries).forEach(entry => {
+                const result = calculateMatchConfidence(filename, entry);
+                if (result.confidence > 0) {
+                    candidates.push(result);
+                }
+            });
+            
+            // Sort by confidence (highest first)
+            candidates.sort((a, b) => b.confidence - a.confidence);
+            
+            // Log matching results for debugging
+            console.log(`\n📄 Matching "${filename}"`);
+            if (candidates.length > 0) {
+                const best = candidates[0];
+                console.log(`✅ Best match: ${best.bibkey} (confidence: ${best.confidence.toFixed(1)}%)`);
+                console.log(`   Matches: ${best.matches.join(', ')}`);
+                
+                if (candidates.length > 1) {
+                    console.log(`   Runner-up: ${candidates[1].bibkey} (${candidates[1].confidence.toFixed(1)}%)`);
+                }
+                
+                // Only return if confidence is above threshold
+                if (best.confidence >= 25) {
+                    return best.bibkey;
+                }
+            }
+            
+            console.log(`❌ No good match found (using fallback)`);
+            
+            // Fallback: create bibkey from filename
+            return filename
+                .replace('.pdf', '')
+                .replace(/[^a-zA-Z0-9]/g, '_')
+                .toLowerCase()
+                .substring(0, 50);
+        }
+
+        // Load available PDF files from draft/bib directory
         async function loadPDFs() {
             try {
-                const response = await fetch('bib/');
+                const response = await fetch('draft/bib/');
                 const html = await response.text();
                 
                 // Parse HTML directory listing to extract PDF filenames
@@ -316,8 +465,13 @@
             }
         }
 
+        // Match PDF filename to bib entry - REPLACED BY findBestBibMatch
+        function matchPDFToBibEntry(filename, bibEntries) {
+            return findBestBibMatch(filename, bibEntries);
+        }
+
         // Parse filename to extract paper information
-        function parseFilename(filename) {
+        function parseFilename(filename, bibEntries = {}) {
             const parts = filename.split(' - ');
             const year = parts[0] || "Unknown";
             const journal = parts[1] || "Unknown";
@@ -340,12 +494,8 @@
                 title = titleParts.slice(1).join(' - ');
             }
             
-            // Create a simple bibkey from filename
-            const bibkey = filename
-                .replace('.pdf', '')
-                .replace(/[^a-zA-Z0-9]/g, '_')
-                .toLowerCase()
-                .substring(0, 50);
+            // Get the correct bibkey from references.bib
+            const bibkey = findBestBibMatch(filename, bibEntries);
             
             return {
                 year,
@@ -359,12 +509,33 @@
 
         // Create papers from PDF files
         async function createPapers() {
-            const pdfFiles = await loadPDFs();
+            console.log('🔄 Loading PDF files and bibliography entries...');
             
-            papers = pdfFiles.map(filename => parseFilename(filename));
+            const [pdfFiles, bibEntries] = await Promise.all([
+                loadPDFs(),
+                loadBibEntries()
+            ]);
+            
+            console.log(`\n🔗 Matching ${pdfFiles.length} PDFs to ${Object.keys(bibEntries).length} bib entries...`);
+            
+            papers = pdfFiles.map(filename => parseFilename(filename, bibEntries));
             filteredPapers = [...papers];
             
-            console.log(`Created ${papers.length} paper entries`);
+            console.log(`\n✅ Created ${papers.length} paper entries with matched bib keys`);
+            
+            // Show summary of matches
+            const matchedPapers = papers.filter(p => Object.keys(bibEntries).includes(p.bibkey));
+            const unmatchedPapers = papers.filter(p => !Object.keys(bibEntries).includes(p.bibkey));
+            
+            console.log(`📊 Matching Summary:`);
+            console.log(`   ✅ Matched: ${matchedPapers.length}`);
+            console.log(`   ❌ Unmatched: ${unmatchedPapers.length}`);
+            
+            if (unmatchedPapers.length > 0) {
+                console.log(`   Unmatched files:`);
+                unmatchedPapers.forEach(p => console.log(`     - ${p.filename}`));
+            }
+            
             return papers;
         }
 
@@ -379,7 +550,7 @@
                     <div class="paper-authors">${paper.authors}</div>
                     <div class="paper-journal">${paper.journal}</div>
                     <div class="paper-actions" onclick="event.stopPropagation()">
-                        <a href="bib/${paper.filename}" class="btn btn-primary" target="_blank">
+                        <a href="draft/bib/${paper.filename}" class="btn btn-primary" target="_blank">
                             📄 View PDF
                         </a>
                         <button class="btn btn-secondary" onclick="copyCitation(event, '${paper.bibkey}')">
@@ -425,7 +596,7 @@
 
         // Copy citation to clipboard
         function copyCitation(event, bibkey) {
-            const citation = `\\cite{${bibkey}}`;
+            const citation = `${bibkey}`;
             const btn = event.target;
             
             navigator.clipboard.writeText(citation).then(() => {
